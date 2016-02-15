@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    android:orientation="vertical"
+
+    tools:context="com.homestudy.sqliteinventoryproject.AddItemActivity">
+
+
+    <TextView
+        android:id="@+id/tvAddItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="Add Inventory Item"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/etItemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter name of product" />
+
+    <EditText
+        android:id="@+id/etItemDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter item description" />
+
+    <EditText
+        android:id="@+id/etItemCode"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:hint="Enter item code" />
+
+    <EditText
+        android:id="@+id/etItemPrice"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:hint="Enter item price"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/etNumberOfQuantity"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:hint="Enter number of quantity"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btnAddToInventory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Item "
+        android:textSize="30sp" />
+
+
+</LinearLayout>
