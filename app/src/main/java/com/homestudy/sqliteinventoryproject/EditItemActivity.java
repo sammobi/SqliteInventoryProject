@@ -50,12 +50,14 @@ public class EditItemActivity extends Activity implements AdapterView.OnItemSele
         mItemPriceEt = (EditText) findViewById(R.id.etViewItemPrice);
         mItemCodeEt = (EditText) findViewById(R.id.etViewItemCode);
         mUpdateItemBtn = (Button) findViewById(R.id.btnUpdateItemDescription);
+
+        mItemLayout = (LinearLayout) findViewById(R.id.liViewItemInformation);
         sqLiteAdapter = new SQLiteAdapter(this);
         lst = sqLiteAdapter.getAllProduct();
 
         mItemNameEt.setVisibility(View.GONE);
 
-
+        lstProductName.add("Select Product Name");
 // to store all the product name into the lstProductName
         for (ProductModel p : lst) {
 
@@ -150,8 +152,17 @@ public class EditItemActivity extends Activity implements AdapterView.OnItemSele
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        if (position == 0) {
+
+            mItemLayout.setVisibility(View.GONE);
+
+
+            return;
+        }
 // this is to get the selected product from the spinner
         ProductModel selectedProductModel = lst.get(position);
+        mItemLayout.setVisibility(View.VISIBLE);
         mItemNameEt.setText(selectedProductModel.name.toString());
         mItemDescriptionEt.setText(selectedProductModel.description.toString());
         mItemPriceEt.setText(selectedProductModel.price.toString());

@@ -19,11 +19,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Product Code"
+        android:text="Product Name "
         android:textSize="20sp" />
 
     <Spinner
-        android:id="@+id/spnProductName"
+        android:id="@+id/product_name_spn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -31,70 +31,59 @@
     </Spinner>
 
     <LinearLayout
+        android:id="@+id/item_description_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvItemDescription"
+            android:id="@+id/item_description_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/tvItemName"
+            android:id="@+id/item_code_tv"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/tvItemCode"
+            android:id="@+id/item_price_tv"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/tvItemPrice"
+            android:id="@+id/item_quantity_available_tv"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/tvItemQuantityAvailable"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
             android:textSize="20sp" />
 
 
         <EditText
-            android:id="@+id/etEnterPurchaseQuantity"
+            android:id="@+id/enter_price_quantity_et"
             android:layout_width="match_parent"
+            android:inputType="number"
             android:layout_height="wrap_content"
             android:hint="Enter quantity" />
 
         <Button
-            android:id="@+id/btnCalculateTotal"
+            android:id="@+id/calculate_total_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Calculate total" />
 
         <TextView
-            android:id="@+id/tvMyTotalPrice"
+            android:id="@+id/total_price_tv"
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text=""
             android:textSize="40sp"
             android:textStyle="bold" />
 
