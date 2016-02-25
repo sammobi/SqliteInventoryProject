@@ -16,10 +16,11 @@ import java.util.List;
 public class SQLiteAdapter {
 
     private static final String DATABASE_NAME = "db_sqliteinventoryproject";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     /* database tables */
     private static final String TABLE_PRODUCT = "tbl_product";
+    private static final String TABLE_TRANSACTIONS = "tbl_transactions";
 
 	/* TABLE_USER_LIBRARY table fields */
 
@@ -29,6 +30,18 @@ public class SQLiteAdapter {
     private static final String KEY_DESCRITION = "description";
     private static final String KEY_NAME = "name";
     private static final String KEY_QUANTITY = "quantity";
+
+    /* TABLE_TRANSACTIONS table fields */
+
+    private static final String KEY_NAME_TRANS = "name_trans";
+    private static final String KEY_PRICE_TRANS = "price_trans";
+    private static final String KEY_QUANTITY_TRANS = "quantity_trans";
+    private static final String KEY_TOTAL_PRICE = "total_price";
+
+
+    /* create table tbl_trans_details script */
+
+    private static final String SCRIPT_CREATE_TABLE_TRANSACTIONS = "create table if not exists " + TABLE_TRANSACTIONS + " (" + KEY_NAME_TRANS + " text, " + KEY_PRICE_TRANS + " text, " + KEY_QUANTITY_TRANS + " text, " + KEY_TOTAL_PRICE + " text );";
 
 
     /* create table tbl_user_books_status script */
@@ -91,7 +104,7 @@ public class SQLiteAdapter {
     }
 
     public long insertOrUpdateProduct(String price, String code, String name, String description, String quantity) {
-        if (null == price || null == code || null == description || null == quantity ) {
+        if (null == price || null == code || null == description || null == quantity) {
             return -1;
         }
 
@@ -105,7 +118,7 @@ public class SQLiteAdapter {
 
 
         openToRead();
-       // String Query = "SELECT * FROM " + TABLE_PRODUCT + " WHERE " + KEY_CODE + "=? AND " + KEY_DESCRITION + "=? AND " + KEY_NAME + "=? AND " + KEY_PRICE + "=? AND " + KEY_QUANTITY + "=?";
+        // String Query = "SELECT * FROM " + TABLE_PRODUCT + " WHERE " + KEY_CODE + "=? AND " + KEY_DESCRITION + "=? AND " + KEY_NAME + "=? AND " + KEY_PRICE + "=? AND " + KEY_QUANTITY + "=?";
         String Query = "SELECT * FROM " + TABLE_PRODUCT + " WHERE " + KEY_NAME + "=?";
         Cursor cursor = sqLiteDatabase.rawQuery(Query, new String[]{name});
 
@@ -123,6 +136,30 @@ public class SQLiteAdapter {
         else
             result = sqLiteDatabase.update(TABLE_PRODUCT, contentValues, KEY_NAME + "=? ",
                     new String[]{name});
+        close();
+        return result;
+    }
+
+    public long insertTransaction(String name, String price, String quantity) {
+        if (null == name || null == price || null == quantity) {
+            return -1;
+        }
+
+        int totalPrice = Integer.parseInt(quantity) * Integer.parseInt(price);
+
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_NAME_TRANS, name);
+        contentValues.put(KEY_PRICE_TRANS, price);
+        contentValues.put(KEY_QUANTITY_TRANS, quantity);
+        contentValues.put(KEY_TOTAL_PRICE, totalPrice);
+
+
+        openToWrite();
+        long result;
+
+        result = sqLiteDatabase.insert(TABLE_TRANSACTIONS, null, contentValues);
+
         close();
         return result;
     }
@@ -197,8 +234,8 @@ public class SQLiteAdapter {
     public class SQLiteHelper extends SQLiteOpenHelper {
 
         public SQLiteHelper(Context context, String name, CursorFactory factory, int version) {
-         //   super(context, Environment.getExternalStorageDirectory() + "/com.homestudy.sqliteinventoryproject/" + name, null, version);
-             super(context, name, null, version);
+            //   super(context, Environment.getExternalStorageDirectory() + "/com.homestudy.sqliteinventoryproject/" + name, null, version);
+            super(context, name, null, version);
         }
 
         /**
@@ -209,13 +246,16 @@ public class SQLiteAdapter {
 
             db.execSQL(SCRIPT_CREATE_TABLE_USER);
 
+
         }
+
 
         /**
          * Handle on database update
          */
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            db.execSQL(SCRIPT_CREATE_TABLE_TRANSACTIONS);
         }
     }
 

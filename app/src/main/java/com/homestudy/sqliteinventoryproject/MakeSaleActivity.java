@@ -1,6 +1,9 @@
 package com.homestudy.sqliteinventoryproject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +26,9 @@ public class MakeSaleActivity extends Activity implements AdapterView.OnItemSele
     Button mCalculateBtn;
     EditText mItemQuantityEt;
     SQLiteAdapter sqLiteAdapter;
+
+    String name, price, quantity;
+
 
     List<ProductModel> lst = new ArrayList<>();
     List<String> lstProductName = new ArrayList<>();
@@ -57,20 +63,46 @@ public class MakeSaleActivity extends Activity implements AdapterView.OnItemSele
 
                 String quantityAvailable = mItemQuantityTv.getText().toString();
                 String requiredQuantity = mItemQuantityEt.getText().toString();
+                if (requiredQuantity.length() <= 0) {
+
+                    Toast.makeText(getApplicationContext(), "Required quantity cannot be less than or equal to zero", Toast.LENGTH_LONG).show();
+
+                    return;
+                }
 
 
                 if (Integer.parseInt(quantityAvailable) < Integer.parseInt(requiredQuantity)) {
 
                     Toast.makeText(getApplicationContext(), "Please enter quantity equal to or less than" + quantityAvailable, Toast.LENGTH_LONG).show();
-
                     return;
-
-
                 }
 
-                int totalPrice = Integer.parseInt(requiredQuantity) * Integer.parseInt(pricePerUnit);
 
-                mTotalPriceTv.setText("" + totalPrice);
+                final int totalPrice = Integer.parseInt(requiredQuantity) * Integer.parseInt(pricePerUnit);
+
+
+                new AlertDialog.Builder(MakeSaleActivity.this)
+                        .setTitle("Purchase Product")
+                        .setMessage("You are going to purchase " + requiredQuantity + " which totals to" + "$ " + totalPrice)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                sqLiteAdapter.insertTransaction(name, price, quantity);
+
+                                Intent intent = new Intent(MakeSaleActivity.this, ViewTransactionsActivity.class);
+                                startActivity(intent);
+
+
+                                // continue with delete
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
 
 
             }
@@ -99,8 +131,12 @@ public class MakeSaleActivity extends Activity implements AdapterView.OnItemSele
             return;
         }
 // this is to get the selected product from the spinner
-        ProductModel selectedProductModel = lst.get(position);
+        ProductModel selectedProductModel = lst.get(position - 1);
         mDescriptionViewLl.setVisibility(View.VISIBLE);
+        name = selectedProductModel.name;
+        price = selectedProductModel.price;
+        quantity = selectedProductModel.quantity;
+
 
         mItemDescriptionTv.setText(selectedProductModel.description.toString());
         mPriceTv.setText(selectedProductModel.price.toString());
