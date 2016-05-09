@@ -27,7 +27,7 @@ public class MakeSaleActivity extends Activity implements AdapterView.OnItemSele
     EditText mItemQuantityEt;
     SQLiteAdapter sqLiteAdapter;
 
-    String name, price, quantity;
+    String name, price, quantity, code, description;
 
 
     List<ProductModel> lst = new ArrayList<>();
@@ -58,11 +58,11 @@ public class MakeSaleActivity extends Activity implements AdapterView.OnItemSele
             @Override
             public void onClick(View v) {
 
-                String pricePerUnit = mPriceTv.getText().toString();
+                final String pricePerUnit = mPriceTv.getText().toString();
 
 
-                String quantityAvailable = mItemQuantityTv.getText().toString();
-                String requiredQuantity = mItemQuantityEt.getText().toString();
+                final String quantityAvailable = mItemQuantityTv.getText().toString();
+                final String requiredQuantity = mItemQuantityEt.getText().toString();
                 if (requiredQuantity.length() <= 0) {
 
                     Toast.makeText(getApplicationContext(), "Required quantity cannot be less than or equal to zero", Toast.LENGTH_LONG).show();
@@ -87,10 +87,15 @@ public class MakeSaleActivity extends Activity implements AdapterView.OnItemSele
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
-                                sqLiteAdapter.insertTransaction(name, price, quantity);
+                                sqLiteAdapter.insertTransaction(name, price, requiredQuantity);
 
-                                Intent intent = new Intent(MakeSaleActivity.this, ViewTransactionsActivity.class);
+
+                                int remainingQuantity = (Integer.parseInt(quantityAvailable) - Integer.parseInt(requiredQuantity));
+                                sqLiteAdapter.insertOrUpdateProduct(price, code, name, description, String.valueOf(remainingQuantity));
+
+                                Intent intent = new Intent(MakeSaleActivity.this, MainActivity.class);
                                 startActivity(intent);
+                                MakeSaleActivity.this.finish();
 
 
                                 // continue with delete
@@ -112,7 +117,8 @@ public class MakeSaleActivity extends Activity implements AdapterView.OnItemSele
 // to store all the product name into the lstProductName
         for (ProductModel p : lst) {
 
-            lstProductName.add(p.name);
+
+            lstProductName.add(null != p.name ? p.name : "");
 
         }
 
@@ -136,6 +142,8 @@ public class MakeSaleActivity extends Activity implements AdapterView.OnItemSele
         name = selectedProductModel.name;
         price = selectedProductModel.price;
         quantity = selectedProductModel.quantity;
+        code = selectedProductModel.code;
+        description = selectedProductModel.description;
 
 
         mItemDescriptionTv.setText(selectedProductModel.description.toString());

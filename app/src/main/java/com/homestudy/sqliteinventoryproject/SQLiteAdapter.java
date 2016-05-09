@@ -16,7 +16,7 @@ import java.util.List;
 public class SQLiteAdapter {
 
     private static final String DATABASE_NAME = "db_sqliteinventoryproject";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 1;
 
     /* database tables */
     private static final String TABLE_PRODUCT = "tbl_product";
@@ -103,6 +103,7 @@ public class SQLiteAdapter {
         return result;
     }
 
+
     public long insertOrUpdateProduct(String price, String code, String name, String description, String quantity) {
         if (null == price || null == code || null == description || null == quantity) {
             return -1;
@@ -140,6 +141,7 @@ public class SQLiteAdapter {
         return result;
     }
 
+
     public long insertTransaction(String name, String price, String quantity) {
         if (null == name || null == price || null == quantity) {
             return -1;
@@ -162,6 +164,44 @@ public class SQLiteAdapter {
 
         close();
         return result;
+    }
+
+    public List<TransactionModel> getAllTransaction() {
+        List<TransactionModel> lst = new ArrayList<>();
+
+
+        openToRead();
+
+        String Query = "SELECT * FROM " + TABLE_TRANSACTIONS;
+        Cursor cursor = sqLiteDatabase.rawQuery(Query, null);
+
+        if (cursor.moveToFirst())
+
+        {
+            do {
+
+
+                int index_NAME = cursor.getColumnIndex(KEY_NAME_TRANS);
+                int index_PRICE = cursor.getColumnIndex(KEY_PRICE_TRANS);
+                int index_QUANTITY = cursor.getColumnIndex(KEY_QUANTITY_TRANS);
+                int index_TOTAL_PRICE = cursor.getColumnIndex(KEY_TOTAL_PRICE);
+
+                String name = cursor.getString(index_NAME);
+                String price = cursor.getString(index_PRICE);
+                String quantity = cursor.getString(index_QUANTITY);
+                String totalPrice = cursor.getString(index_TOTAL_PRICE);
+
+                TransactionModel p = new TransactionModel(name, quantity, price, totalPrice);
+                lst.add(p);
+            }
+
+            while (cursor.moveToNext());
+        }
+
+        close();
+
+
+        return lst;
     }
 
     public Boolean isItemNameExist(String name) {
@@ -245,6 +285,7 @@ public class SQLiteAdapter {
         public void onCreate(SQLiteDatabase db) {
 
             db.execSQL(SCRIPT_CREATE_TABLE_USER);
+            db.execSQL(SCRIPT_CREATE_TABLE_TRANSACTIONS);
 
 
         }
@@ -255,7 +296,8 @@ public class SQLiteAdapter {
          */
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL(SCRIPT_CREATE_TABLE_TRANSACTIONS);
+
+
         }
     }
 

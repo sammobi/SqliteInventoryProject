@@ -161,7 +161,7 @@ public class EditItemActivity extends Activity implements AdapterView.OnItemSele
             return;
         }
 // this is to get the selected product from the spinner
-        ProductModel selectedProductModel = lst.get(position);
+        ProductModel selectedProductModel = lst.get(position - 1);
         mItemLayout.setVisibility(View.VISIBLE);
         mItemNameEt.setText(selectedProductModel.name.toString());
         mItemDescriptionEt.setText(selectedProductModel.description.toString());
