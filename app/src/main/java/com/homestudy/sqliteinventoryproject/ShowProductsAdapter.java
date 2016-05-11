@@ -17,8 +17,9 @@ public class ShowProductsAdapter extends RecyclerView.Adapter<ShowProductsAdapte
     private List<ProductModel> lstProductModel;
     private Context context;
 
-    public ShowProductsAdapter(Context context) {
+    public ShowProductsAdapter(Context context, List<ProductModel> lst) {
         this.context = context;
+        lstProductModel = lst;
 
 
     }
@@ -34,7 +35,10 @@ public class ShowProductsAdapter extends RecyclerView.Adapter<ShowProductsAdapte
 
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_showproduct, parent, false);
-        return new ViewHolder(view);
+
+        ViewHolder v = new ViewHolder(view);
+        return v;
+
     }
 
     @Override

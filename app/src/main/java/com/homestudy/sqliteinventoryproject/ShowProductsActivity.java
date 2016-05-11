@@ -28,16 +28,18 @@ public class ShowProductsActivity extends Activity {
         context = this;
         sqLiteAdapter = new SQLiteAdapter(context);
         lst = sqLiteAdapter.getAllProduct();
-        showProductsAdapter = new ShowProductsAdapter(context);
-        showProductsAdapter.setList(lst);
+
+
 
         recyclerView = (RecyclerView) findViewById(R.id.product_rcv);
-        recyclerView.setHasFixedSize(true);
+     //   recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new MarginDecoration(context));
+        showProductsAdapter = new ShowProductsAdapter(context, lst);
+        recyclerView.setAdapter(showProductsAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
 
 
-        recyclerView.setAdapter(showProductsAdapter);
 
+      //  showProductsAdapter.setList(lst);
     }
 }
