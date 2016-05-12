@@ -36,7 +36,7 @@ public class ShowProductsActivity extends Activity {
         recyclerView.addItemDecoration(new MarginDecoration(context));
         showProductsAdapter = new ShowProductsAdapter(context, lst);
         recyclerView.setAdapter(showProductsAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
 
 
 

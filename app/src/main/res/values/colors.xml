@@ -9,4 +9,8 @@
     <color name="colorBackground">#10494a</color>
     <color name="primary_dark_material_light">#0c0c0c</color>
     <color name="primary_material_light">#009688</color>
+    <color name="rcv_color">#fdfdd6</color>
+    <color name="semi_transparent_color">#490e0e0e</color>
+
+
 </resources>

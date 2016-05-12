@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -44,21 +46,30 @@ public class ShowProductsAdapter extends RecyclerView.Adapter<ShowProductsAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        ProductModel productModel = lstProductModel.get(position);
+        final ProductModel productModel = lstProductModel.get(position);
         holder.nameTv.setText(productModel.name);
         holder.priceTv.setText(productModel.price);
         holder.codeTv.setText(productModel.code);
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "You clicked " + productModel.name, Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
 
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return lstProductModel.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTv, priceTv, codeTv;
+        RelativeLayout relativeLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -66,6 +77,7 @@ public class ShowProductsAdapter extends RecyclerView.Adapter<ShowProductsAdapte
             nameTv = (TextView) itemView.findViewById(R.id.name_tv);
             priceTv = (TextView) itemView.findViewById(R.id.price_tv);
             codeTv = (TextView) itemView.findViewById(R.id.code_tv);
+            relativeLayout = (RelativeLayout) itemView.findViewById(R.id.row_rl);
 
 
         }
